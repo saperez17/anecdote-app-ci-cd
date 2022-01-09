@@ -35,44 +35,43 @@ jobs:
           DEFAULT_BUMP: patch
           # DRY_RUN: true
           COMMIT_CONTAINS_SKIP_STRING: ${{ contains(join(toJson(github.event.commits.*.message)), '#skip') }}
-      # - name: heroku deploy
-      #   uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-      #   if: ${{ github.event_name == 'push' && env.COMMIT_NOT_CONTAINS_SKIP_STRING }}
-      #   with:
-      #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-      #     heroku_app_name: pokedex-app-openstack #Must be unique in Heroku
-      #     heroku_email: santiagobn1@gmail.com
-      #     healthcheck: "https://pokedex-app-openstack.herokuapp.com/health"
-      #     checkstring: "ok"
-      #     rollbackonhealthcheckfailed: true
-      # - name: Sucess notification
-      #   uses: 8398a7/action-slack@v3
-      #   with:
-      #     status: custom
-      #     fields: took, commit
-      #     custom_payload: |
-      #       {
-      #         attachments: [{
-      #           "author_name": "8398a7@action-slack",
-      #           "text": `A new version deployed to  (${process.env.AS_COMMIT}) by ${process.env.COMMIT_AUTHOR} ${{ job.status }} build took ${process.env.AS_TOOK}`,
-      #           "color": "good",
-      #         }]
-      #       }
-      #     channel: "#notifications"
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-      #     MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
-      #     COMMIT_AUTHOR: ${{ github.event.commits[github.event.commits.length-1].author.name }}
-      #   if: ${{ github.event_name == 'push' && job.status  == 'success' }}
-      # - name: Failure notification
-      #   uses: 8398a7/action-slack@v3
-      #   with:
-      #     status: ${{ job.status }}
-      #     fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
-      #     mention: here
-      #     channel: "#notifications"
-      #     if_mention: failure,cancelled
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-      #     COMMIT_AUTHOR: ${{ github.event.commits[github.event.commits.length-1].author.name }}
-      #   if: always()
+      - name: heroku deploy
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        if: ${{ github.event_name == 'push' && env.COMMIT_NOT_CONTAINS_SKIP_STRING }}
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: pokedex-app-openstack #Must be unique in Heroku
+          heroku_email: santiagobn1@gmail.com
+          healthcheck: "https://anecdote-app-ci-cd.herokuapp.com"
+          rollbackonhealthcheckfailed: true
+      - name: Sucess notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: took, commit
+          custom_payload: |
+            {
+              attachments: [{
+                "author_name": "8398a7@action-slack",
+                "text": `A new version deployed to https://anecdote-app-ci-cd.herokuapp.com/ (${process.env.AS_COMMIT}) by ${process.env.COMMIT_AUTHOR} ${{ job.status }} build took ${process.env.AS_TOOK}`,
+                "color": "good",
+              }]
+            }
+          channel: "#notifications"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          MATRIX_CONTEXT: ${{ toJson(matrix) }} # required
+          COMMIT_AUTHOR: ${{ github.event.commits[github.event.commits.length-1].author.name }}
+        if: ${{ github.event_name == 'push' && job.status  == 'success' }}
+      - name: Failure notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
+          mention: here
+          channel: "#notifications"
+          if_mention: failure,cancelled
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          COMMIT_AUTHOR: ${{ github.event.commits[github.event.commits.length-1].author.name }}
+        if: always()
