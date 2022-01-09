@@ -12,7 +12,7 @@ import useField from './hooks/useField';
 
 const Menu = () => {
   const padding = {
-    paddingRight: 5
+    paddingRight: 5,
   };
   return (
     <div>
