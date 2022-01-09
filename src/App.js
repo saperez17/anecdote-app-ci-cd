@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+/* eslint-disable react/no-unescaped-entities */
+import React, { useState } from 'react';
 import {
   Link,
   Switch,
   Route,
-  useParams,
   useRouteMatch,
   useHistory,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import useField from "./hooks/useField";
+import useField from './hooks/useField';
 
 const Menu = () => {
   const padding = {
@@ -33,15 +33,13 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      
-        {anecdotes.map((anecdote) => (
-          <li>
+      {anecdotes.map((anecdote) => (
+        <li key={anecdote.id}>
           <Link key={anecdote.id} to={`/anecdotes/${anecdote.id}`}>
             {anecdote.content}
           </Link>
-          </li>
-        ))}
-      
+        </li>
+      ))}
     </ul>
   </div>
 );
@@ -70,26 +68,22 @@ const About = () => (
 
 const Footer = () => (
   <div>
-    Anecdote app for{" "}
+    Anecdote app for
     <a href="https://courses.helsinki.fi/fi/tkt21009">
       Full Stack -websovelluskehitys
     </a>
-    . See{" "}
+    . See
     <a href="https://github.com/fullstack-hy/routed-anecdotes/blob/master/src/App.js">
       https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js
-    </a>{" "}
+    </a>
     for the source code.
   </div>
 );
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
-
   const history = useHistory();
 
-  const contentField = useField('text'); 
+  const contentField = useField('text');
   const authorField = useField('text');
   const infotField = useField('text');
 
@@ -101,38 +95,29 @@ const CreateNew = (props) => {
       author: authorField.fieldParams.value,
       votes: 0,
     });
-    history.push("/");
+    history.push('/');
   };
 
   const resetHandler = () => {
-    contentField.reset()
-    authorField.reset()
-    infotField.reset()
-  }
+    contentField.reset();
+    authorField.reset();
+    infotField.reset();
+  };
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            { ...contentField.fieldParams }
-          />
+          <input name="content" {...contentField.fieldParams} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            { ...authorField.fieldParams }
-          />
+          <input name="author" {...authorField.fieldParams} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-           { ...infotField.fieldParams }
-          />
+          <input name="info" {...infotField.fieldParams} />
         </div>
         <button>create</button>
       </form>
@@ -151,21 +136,21 @@ const Note = ({ note }) => {
 };
 
 const App = () => {
-  const match = useRouteMatch("/anecdotes/:id");
+  const match = useRouteMatch('/anecdotes/:id');
   const [anecdotes, setAnecdotes] = useState([
     {
-      content: "If it hurts, do it more often",
-      author: "Jez Humble",
-      info: "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
+      content: 'If it hurts, do it more often',
+      author: 'Jez Humble',
+      info: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
       votes: 0,
-      id: "1",
+      id: '1',
     },
     {
-      content: "Premature optimization is the root of all evil",
-      author: "Donald Knuth",
-      info: "http://wiki.c2.com/?PrematureOptimization",
+      content: 'Premature optimization is the root of all evil',
+      author: 'Donald Knuth',
+      info: 'http://wiki.c2.com/?PrematureOptimization',
       votes: 0,
-      id: "2",
+      id: '2',
     },
   ]);
 
@@ -181,17 +166,6 @@ const App = () => {
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
-
-  const vote = (id) => {
-    const anecdote = anecdoteById(id);
-
-    const voted = {
-      ...anecdote,
-      votes: anecdote.votes + 1,
-    };
-    setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
-  };
-
   const matchedNoted = match ? anecdoteById(match.params.id) : null;
 
   return (
