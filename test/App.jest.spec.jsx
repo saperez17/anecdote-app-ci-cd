@@ -8,12 +8,19 @@ import App from '../src/App'
 describe('<App />', () => {
   it('Frontend page is displayed correctly', async () => {
     await act(async () => {
-      const { getByText } = render(
+      const { getByText, getByRole } = render(
         <Router>
           <App />
         </Router>
       )
-      expect(getByText('Software anecdotes')).toBeVisible()
+      expect(getByRole('heading', { name: /Software anecdotes/, level:1 })).toBeVisible();
+      expect(getByText('anecdotes')).toHaveAttribute('href', '/')
+      expect(getByText('create new')).toHaveAttribute('href', '/create')
+      expect(getByText('about')).toHaveAttribute('href', '/about')
+
+      expect(getByRole('heading', { name: /Anecdotes/, level:2 })).toBeVisible();
+      expect(getByText('If it hurts, do it more often')).toHaveAttribute('href', '/anecdotes/1')
+      expect(getByText('Premature optimization is the root of all evil')).toHaveAttribute('href', '/anecdotes/2')
     })
   })
 })
