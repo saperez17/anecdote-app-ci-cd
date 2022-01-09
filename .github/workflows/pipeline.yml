@@ -40,7 +40,7 @@ jobs:
         if: ${{ github.event_name == 'push' && env.COMMIT_NOT_CONTAINS_SKIP_STRING }}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: pokedex-app-openstack #Must be unique in Heroku
+          heroku_app_name: anecdote-app-ci-cd #Must be unique in Heroku
           heroku_email: santiagobn1@gmail.com
           healthcheck: "https://anecdote-app-ci-cd.herokuapp.com"
           rollbackonhealthcheckfailed: true
