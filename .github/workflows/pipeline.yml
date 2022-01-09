@@ -33,7 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-          DRY_RUN: true
+          # DRY_RUN: true
           COMMIT_CONTAINS_SKIP_STRING: ${{ contains(join(toJson(github.event.commits.*.message)), '#skip') }}
       - name: heroku deploy
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
