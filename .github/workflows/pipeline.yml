@@ -27,15 +27,15 @@ jobs:
       - name: test
         run: npm run test
       - uses: actions/checkout@v2
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.33.0
-        if: ${{ github.event_name == 'push' && env.COMMIT_NOT_CONTAINS_SKIP_STRING }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
-          # DRY_RUN: true
-          COMMIT_CONTAINS_SKIP_STRING: ${{ contains(join(toJson(github.event.commits.*.message)), '#skip') }}
-      - uses: actions/checkout@v2
+      # - name: Bump version and push tag
+      #   uses: anothrNick/github-tag-action@1.33.0
+      #   if: ${{ github.event_name == 'push' && env.COMMIT_NOT_CONTAINS_SKIP_STRING }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     DEFAULT_BUMP: patch
+      #     # DRY_RUN: true
+      #     COMMIT_CONTAINS_SKIP_STRING: ${{ contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+      # - uses: actions/checkout@v2
       - name: heroku deploy
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         if: ${{ github.event_name == 'push' && env.COMMIT_NOT_CONTAINS_SKIP_STRING }}
